@@ -24,6 +24,10 @@ import org.apache.dubbo.config.utils.ReferenceConfigCache;
 import org.apache.dubbo.demo.DemoService;
 import org.apache.dubbo.rpc.service.GenericService;
 
+/**
+ * 有些场景中, 比如: 在写SDK的时候, 不能依赖Spring框架.
+ * 只能使用API来构建provider和consumer.
+ */
 public class Application {
     public static void main(String[] args) {
         if (isClassic(args)) {
@@ -38,16 +42,17 @@ public class Application {
     }
 
     private static void runWithBootstrap() {
+        // 创建 ReferenceConfig, 其中指定了引用的接口 DemoService
         ReferenceConfig<DemoService> reference = new ReferenceConfig<>();
         reference.setInterface(DemoService.class);
         reference.setGeneric("true");
-
+        // 创建 DubboBootstrap, 指定 ApplicationConfig以及RegistryConfig
         DubboBootstrap bootstrap = DubboBootstrap.getInstance();
         bootstrap.application(new ApplicationConfig("dubbo-demo-api-consumer"))
                 .registry(new RegistryConfig("zookeeper://127.0.0.1:2181"))
                 .reference(reference)
                 .start();
-
+        // 获取 DemoService实例并调用方法
         DemoService demoService = ReferenceConfigCache.getCache().get(reference);
         String message = demoService.sayHello("dubbo");
         System.out.println(message);

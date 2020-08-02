@@ -33,6 +33,9 @@
     </properties>
 
     <dependencies>
+        <!-- DemoServiceImpl实现了 DemoService接口. sayHello()方法直接返回一个字符串.
+        sayHelloAsync()方法返回一个CompletableFuture对象.
+         -->
         <dependency>
             <groupId>org.apache.dubbo</groupId>
             <artifactId>dubbo-demo-interface</artifactId>

@@ -24,7 +24,12 @@ import org.apache.dubbo.demo.DemoService;
 
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * 有些场景中, 比如: 在写SDK的时候, 不能依赖Spring框架.
+ * 只能使用API来构建provider和consumer.
+ */
 public class Application {
+
     public static void main(String[] args) throws Exception {
         if (isClassic(args)) {
             startWithExport();
@@ -37,12 +42,20 @@ public class Application {
         return args.length > 0 && "classic".equalsIgnoreCase(args[0]);
     }
 
+    /**
+     * 单独创建一个服务
+     */
     private static void startWithBootstrap() {
+        // 创建一个ServiceConfig的实例, 泛型参数是业务接口实现类
+        // 即: DemoServiceImpl
         ServiceConfig<DemoServiceImpl> service = new ServiceConfig<>();
+        // 指定业务接口
         service.setInterface(DemoService.class);
+        // 指定业务接口实现类, 这个对象负责处理consumer的请求
         service.setRef(new DemoServiceImpl());
-
+        // 获取 DubboBootstrap实例. 单例对象. 为什么是单例, 点进去看DubboBootstrap类的注释.
         DubboBootstrap bootstrap = DubboBootstrap.getInstance();
+        // 生成一个 ApplicationConfig 的实例, 指定ZK地址以及 ServiceConfig实例
         bootstrap.application(new ApplicationConfig("dubbo-demo-api-provider"))
                 .registry(new RegistryConfig("zookeeper://127.0.0.1:2181"))
                 .service(service)
@@ -50,6 +63,10 @@ public class Application {
                 .await();
     }
 
+    /**
+     * 暴露服务
+     * @throws InterruptedException
+     */
     private static void startWithExport() throws InterruptedException {
         ServiceConfig<DemoServiceImpl> service = new ServiceConfig<>();
         service.setInterface(DemoService.class);

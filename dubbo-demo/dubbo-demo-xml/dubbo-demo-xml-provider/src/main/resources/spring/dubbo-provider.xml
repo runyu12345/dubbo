@@ -20,16 +20,17 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
        http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
-
+    <!-- -->
     <dubbo:application metadata-type="remote" name="demo-provider"/>
+    <!-- -->
     <dubbo:metadata-report address="zookeeper://127.0.0.1:2181"/>
-
+    <!-- 注册中心地址 -->
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
-
+    <!-- 协议为dubbo协议 -->
     <dubbo:protocol name="dubbo"/>
-
+    <!-- 配置为Spring Bean-->
     <bean id="demoService" class="org.apache.dubbo.demo.provider.DemoServiceImpl"/>
-
+    <!-- 作为服务暴露 -->
     <dubbo:service interface="org.apache.dubbo.demo.DemoService" ref="demoService"/>
 
 </beans>

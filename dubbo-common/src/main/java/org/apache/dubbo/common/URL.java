@@ -199,11 +199,15 @@ class URL implements Serializable {
                 && StringUtils.isNotEmpty(password)) {
             throw new IllegalArgumentException("Invalid url, password without username!");
         }
+        // 协议,比如: dubbo协议
         this.protocol = protocol;
+        // 用户名
         this.username = username;
+        // 密码
         this.password = password;
         this.host = host;
         this.port = Math.max(port, 0);
+        // 地址 域名:端口
         this.address = getAddress(this.host, this.port);
 
         // trim the beginning "/"

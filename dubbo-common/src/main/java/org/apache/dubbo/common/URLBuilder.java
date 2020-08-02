@@ -24,6 +24,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * URL辅助类
+ * 用于辅助构造URL
+ */
 public final class URLBuilder {
     private String protocol;
 

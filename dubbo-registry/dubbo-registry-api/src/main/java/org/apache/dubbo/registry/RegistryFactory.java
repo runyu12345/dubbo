@@ -39,6 +39,9 @@ public interface RegistryFactory {
      * 5. Support the timeout=1000 request timeout setting.<br>
      * 6. Support session=60000 session timeout or expiration settings.<br>
      *
+     *
+     *
+     * 适配器方法, Dubbo在运行时会动态生成相应的$Adaptive类型.
      * @param url Registry address, is not allowed to be empty
      * @return Registry reference, never return empty value
      */
